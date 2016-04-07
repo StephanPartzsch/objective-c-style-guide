@@ -1,4 +1,4 @@
-# Objective-C style guide
+# IVU Objective-C Style Guide
 
 This styleguide is heavily based on the style guide for [raywenderlich.com](https://github.com/raywenderlich/objective-c-style-guide) and a needed customization.
 Thanks to all [contributers](#credits).
@@ -12,6 +12,7 @@ Thanks to all [contributers](#credits).
 * [Comments](#comments)
 * [Naming](#naming)
   * [Underscores](#underscores)
+  * [Localization](#localization)
 * [Methods](#methods)
 * [Variables](#variables)
 * [Property Attributes](#property-attributes)
@@ -104,33 +105,33 @@ Use `#pragma mark -` to categorize methods in functional groupings and protocol/
 
 ## Spacing
 
-* **?????** Indent using 2 spaces (this conserves space in print and makes line wrapping less likely). Never indent with tabs. Be sure to set this preference in Xcode.
-* Method braces and other braces (`if`/`else`/`switch`/`while` etc.) always open and close on a new line.
+* Indent using 1 tab. Never indent with spaces. Be sure to set this preference in Xcode.
+* Method braces and other braces (`if`/`else`/`switch`/`while` etc.) always open on the same line and close on a new line.
 
 **Preferred:**
 ```objc
-if (user.isHappy)
-{
+if (user.isHappy) {
   //Do something
-} else
-{
+} else {
   //Do something else
 }
 ```
 
 **Not Preferred:**
 ```objc
-if (user.isHappy) {
+if (user.isHappy)
+{
     //Do something
 }
-else {
+else
+{
     //Do something else
 }
 ```
 
 * There should be exactly one blank line between methods to aid in visual clarity and organization. Whitespace within methods should separate functionality, but often there should probably be new methods.
 * Prefer using auto-synthesis. But if necessary, `@synthesize` and `@dynamic` should each be declared on new lines in the implementation.
-* Colon-aligning method invocation should often be avoided.  There are cases where a method signature may have >= 3 colons and colon-aligning makes the code more readable. Please do **NOT** however colon align methods containing blocks because Xcode's indenting makes it illegible.
+* Colon-aligning method invocation should often be avoided. There are cases where a method signature may have >= 3 colons and colon-aligning makes the code more readable. Please do **NOT** however colon align methods containing blocks because Xcode's indenting makes it illegible.
 
 **Preferred:**
 
@@ -151,7 +152,8 @@ else {
                  animations:^{
                      // something
                  }
-                 completion:^(BOOL finished) {
+                 completion:^(BOOL finished)
+                 {
                      // something
                  }];
 ```
@@ -182,14 +184,12 @@ UIButton *settingsButton;
 UIButton *setBut;
 ```
 
-**???** A three letter prefix should always be used for class names and constants, however may be omitted for Core Data entity names. For IVU code the prefix 'IVU' should be used.
-
-Constants should be camel-case with all words capitalized and prefixed by the related class name for clarity.
+Constants should be camel-case with all words capitalized.
 
 **Preferred:**
 
 ```objc
-static NSTimeInterval const ABCTutorialViewControllerNavigationFadeAnimationDuration = 0.3;
+static NSTimeInterval const NavigationFadeAnimationDuration = 0.3;
 ```
 
 **Not Preferred:**
@@ -219,6 +219,22 @@ When using properties, instance variables should always be accessed and mutated 
 An exception to this: inside initializers, the backing instance variable (i.e. \_variableName) should be used directly to avoid any potential side effects of the getters/setters.
 
 Local variables should not contain underscores.
+
+### Localization
+
+Localization keys should be named as separate words with each word starting uppercase.
+
+**Preferred:**
+
+```
+"No Network Available Message" = "An error occurred while connection through the network.";
+```
+
+**Not Preferred:**
+
+```
+"noNetworkAvailableMessage" = "An error occurred while connection through the network.";
+```
 
 
 ## Methods
@@ -269,8 +285,7 @@ Direct access to instance variables that 'back' properties should be avoided exc
 **Not Preferred:**
 
 ```objc
-@interface ABCTutorial : NSObject
-{
+@interface ABCTutorial : NSObject {
   NSString *tutorialName;
 }
 ```
@@ -361,15 +376,15 @@ Constants are preferred over in-line string literals or numbers, as they allow f
 **Preferred:**
 
 ```objc
-static NSString * const ABCCompanyName = @"ABC_Company.com";
+static NSString * const CompanyName = @"Company.com";
 
-static CGFloat const ABCImageThumbnailHeight = 50.0;
+static CGFloat const ImageThumbnailHeight = 50.0;
 ```
 
 **Not Preferred:**
 
 ```objc
-#define CompanyName @"ABC_Company.com"
+#define CompanyName @"Company.com"
 
 #define thumbnailHeight 2
 ```
@@ -382,8 +397,7 @@ When using `enum`s, it is recommended to use the new fixed underlying type speci
 **For Example:**
 
 ```objc
-typedef NS_ENUM(NSInteger, ABCLeftMenuTopItemType)
-{
+typedef NS_ENUM(NSInteger, ABCLeftMenuTopItemType) {
   ABCLeftMenuTopItemMain,
   ABCLeftMenuTopItemShows,
   ABCLeftMenuTopItemSchedule
@@ -393,8 +407,7 @@ typedef NS_ENUM(NSInteger, ABCLeftMenuTopItemType)
 You can also make explicit value assignments (showing older k-style constant definition):
 
 ```objc
-typedef NS_ENUM(NSInteger, ABCGlobalConstants)
-{
+typedef NS_ENUM(NSInteger, ABCGlobalConstants) {
   ABCPinSizeMin = 1,
   ABCPinSizeMax = 5,
   ABCPinCountMin = 100,
@@ -421,8 +434,7 @@ Braces are not required for case statements, unless enforced by the complier.
 
 ```objc
 
-switch (condition)
-{
+switch (condition) {
   case 1:
     // ...
     break;
@@ -443,8 +455,7 @@ switch (condition)
 There are times when the same code can be used for multiple cases, and a fall-through should be used. A fall-through is the removal of the 'break' statement for a case thus allowing the flow of execution to pass to the next case value. A fall-through should be commented for coding clarity.
 
 ```objc
-switch (condition)
-{
+switch (condition) {
   case 1:
     // ** fall-through! **
   case 2:
@@ -462,8 +473,7 @@ When using an enumerated type for a switch, 'default' is not needed. For example
 ```objc
 ABCLeftMenuTopItemType menuType = ABCLeftMenuTopItemMain;
 
-switch (menuType)
-{
+switch (menuType) {
   case ABCLeftMenuTopItemMain:
     // ...
     break;
@@ -529,8 +539,7 @@ Conditional bodies should always use braces even when a conditional body could b
 
 **Preferred:**
 ```objc
-if (!error)
-{
+if (!error) {
   return success;
 }
 ```
@@ -573,11 +582,9 @@ result = a > b ? x = c > d ? c : d : y;
 Init methods should follow the convention provided by Apple's generated code template. A return type of 'instancetype' should also be used instead of 'id'.
 
 ```objc
-- (instancetype)init
-{
+- (instancetype)init {
   self = [super init];
-  if (self)
-  {
+  if (self) {
     // ...
   }
   return self;
@@ -638,10 +645,8 @@ When coding with conditionals, the left hand margin of the code should be the "g
 **Preferred:**
 
 ```objc
-- (void)someMethod
-{
-  if (![someOther boolValue])
-  {
+- (void)someMethod {
+  if (![someOther boolValue]) {
     return;
   }
 
@@ -670,8 +675,7 @@ When methods return an error parameter by reference, switch on the returned valu
 **Preferred:**
 ```objc
 NSError *error;
-if (![self trySomethingWithError:&error])
-{
+if (![self trySomethingWithError:&error]) {
   // Handle Error
 }
 ```
@@ -693,8 +697,7 @@ Some of Apple’s APIs write garbage values to the error parameter (if non-NULL)
 
 Singleton objects should use a thread-safe pattern for creating their shared instance.
 ```objc
-+ (instancetype)sharedInstance
-{
++ (instancetype)sharedInstance {
   static id sharedInstance = nil;
 
   static dispatch_once_t onceToken;
@@ -716,7 +719,7 @@ For example:
 ```objc
 self.productsRequest = [[SKProductsRequest alloc] initWithProductIdentifiers:productIdentifiers];
 ```
-**???** A long line of code like this should be carried on to the second line adhering to this style guide's Spacing section (two spaces).
+A long line of code like this should be carried on to the second line adhering to this style guide's Spacing section (1 tab).
 ```objc
 self.productsRequest = [[SKProductsRequest alloc]
   initWithProductIdentifiers:productIdentifiers];
